@@ -2,12 +2,12 @@
 
 namespace App\Service;
 
-use App\Entity\PackagePopularity;
-use App\Entity\PackagePopularityList;
 use App\Repository\PackageRepository;
 use App\Request\PackageQueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
+use App\Response\PackagePopularity;
+use App\Response\PackagePopularityList;
 
 class PackagePopularityCalculator
 {
@@ -79,20 +79,22 @@ class PackagePopularityCalculator
             $paginationRequest->getLimit()
         );
 
-        $packagePopularities = iterator_to_array((function () use ($packages, $rangeCount, $statisticsRangeRequest) {
-            foreach ($packages['packages'] as $package) {
-                $packagePopularity = new PackagePopularity(
-                    $package['name'],
-                    $rangeCount,
-                    $package['count'],
-                    $statisticsRangeRequest->getStartMonth(),
-                    $statisticsRangeRequest->getEndMonth()
-                );
-                if ($packagePopularity->getPopularity() > 0) {
-                    yield $packagePopularity;
+        $packagePopularities = iterator_to_array(
+            (function () use ($packages, $rangeCount, $statisticsRangeRequest) {
+                foreach ($packages['packages'] as $package) {
+                    $packagePopularity = new PackagePopularity(
+                        $package['name'],
+                        $rangeCount,
+                        $package['count'],
+                        $statisticsRangeRequest->getStartMonth(),
+                        $statisticsRangeRequest->getEndMonth()
+                    );
+                    if ($packagePopularity->getPopularity() > 0) {
+                        yield $packagePopularity;
+                    }
                 }
-            }
-        })());
+            })()
+        );
 
         return new PackagePopularityList(
             $packagePopularities,
@@ -122,23 +124,25 @@ class PackagePopularityCalculator
             $paginationRequest->getLimit()
         );
 
-        $packagePopularities = iterator_to_array((function () use (
-            $packages,
-            $rangeCountSeries
-        ) {
-            foreach ($packages['packages'] as $package) {
-                $packagePopularity = new PackagePopularity(
-                    $package['name'],
-                    $rangeCountSeries[$package['month']],
-                    $package['count'],
-                    $package['month'],
-                    $package['month']
-                );
-                if ($packagePopularity->getPopularity() > 0) {
-                    yield $packagePopularity;
+        $packagePopularities = iterator_to_array(
+            (function () use (
+                $packages,
+                $rangeCountSeries
+            ) {
+                foreach ($packages['packages'] as $package) {
+                    $packagePopularity = new PackagePopularity(
+                        $package['name'],
+                        $rangeCountSeries[$package['month']],
+                        $package['count'],
+                        $package['month'],
+                        $package['month']
+                    );
+                    if ($packagePopularity->getPopularity() > 0) {
+                        yield $packagePopularity;
+                    }
                 }
-            }
-        })());
+            })()
+        );
 
         return new PackagePopularityList(
             $packagePopularities,
@@ -159,10 +163,12 @@ class PackagePopularityCalculator
             $statisticsRangeRequest->getEndMonth()
         );
 
-        return iterator_to_array((function () use ($monthlyCount) {
-            foreach ($monthlyCount as $month) {
-                yield $month['month'] => $month['count'];
-            }
-        })());
+        return iterator_to_array(
+            (function () use ($monthlyCount) {
+                foreach ($monthlyCount as $month) {
+                    yield $month['month'] => $month['count'];
+                }
+            })()
+        );
     }
 }

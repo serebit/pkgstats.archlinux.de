@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\PackagePopularity;
+use App\Response\PackagePopularity;
 use PHPUnit\Framework\TestCase;
 
 class PackagePopularityTest extends TestCase

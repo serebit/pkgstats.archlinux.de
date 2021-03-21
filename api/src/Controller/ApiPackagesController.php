@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\PackagePopularity;
-use App\Entity\PackagePopularityList;
 use App\Request\PackageQueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
+use App\Response\PackagePopularity;
+use App\Response\PackagePopularityList;
 use App\Service\PackagePopularityCalculator;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Annotations as OA;
 
 /**
  * @Cache(smaxage="first day of next month", maxage="+5 minutes")

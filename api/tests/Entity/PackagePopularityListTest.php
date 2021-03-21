@@ -2,8 +2,8 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\PackagePopularity;
-use App\Entity\PackagePopularityList;
+use App\Response\PackagePopularity;
+use App\Response\PackagePopularityList;
 use PHPUnit\Framework\TestCase;
 
 class PackagePopularityListTest extends TestCase
