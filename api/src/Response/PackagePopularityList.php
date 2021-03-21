@@ -2,7 +2,7 @@
 
 namespace App\Response;
 
-class PackagePopularityList implements \JsonSerializable
+class PackagePopularityList
 {
     /**
      * @var PackagePopularity[]
@@ -36,20 +36,6 @@ class PackagePopularityList implements \JsonSerializable
         $this->total = $total;
         $this->limit = $limit;
         $this->offset = $offset;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'total' => $this->getTotal(),
-            'count' => $this->getCount(),
-            'limit' => $this->getLimit(),
-            'offset' => $this->getOffset(),
-            'packagePopularities' => $this->getPackagePopularities()
-        ];
     }
 
     /**

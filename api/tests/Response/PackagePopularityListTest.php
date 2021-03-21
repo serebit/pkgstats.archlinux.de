@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Entity;
+namespace App\Tests\Response;
 
 use App\Response\PackagePopularity;
 use App\Response\PackagePopularityList;
@@ -17,22 +17,5 @@ class PackagePopularityListTest extends TestCase
         $this->assertEquals(34, $packagePopularityList->getTotal());
         $this->assertCount(1, $packagePopularityList->getPackagePopularities());
         $this->assertEquals($packagePopularity, $packagePopularityList->getPackagePopularities()[0]);
-    }
-
-    public function testJsonSerialize(): void
-    {
-        $packagePopularity = new PackagePopularity('pacman', 22, 13, 201901, 201902);
-        $packagePopularityList = new PackagePopularityList([$packagePopularity], 34, 10, 0);
-
-        $this->assertEquals(
-            [
-                'total' => 34,
-                'count' => 1,
-                'limit' => 10,
-                'offset' => 0,
-                'packagePopularities' => [$packagePopularity]
-            ],
-            $packagePopularityList->jsonSerialize()
-        );
     }
 }

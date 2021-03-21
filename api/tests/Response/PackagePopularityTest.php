@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Entity;
+namespace App\Tests\Response;
 
 use App\Response\PackagePopularity;
 use PHPUnit\Framework\TestCase;
@@ -17,23 +17,6 @@ class PackagePopularityTest extends TestCase
         $this->assertEquals(59.09, $packagePopularity->getPopularity());
         $this->assertEquals(201901, $packagePopularity->getStartMonth());
         $this->assertEquals(201902, $packagePopularity->getEndMonth());
-    }
-
-    public function testJsonSerialize(): void
-    {
-        $packagePopularity = new PackagePopularity('pacman', 22, 13, 201901, 201902);
-
-        $this->assertEquals(
-            [
-                'name' => 'pacman',
-                'samples' => 22,
-                'count' => 13,
-                'popularity' => 59.09,
-                'startMonth' => 201901,
-                'endMonth' => 201902
-            ],
-            $packagePopularity->jsonSerialize()
-        );
     }
 
     public function testEmptyPopularity(): void

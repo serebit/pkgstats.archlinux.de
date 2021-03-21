@@ -2,7 +2,7 @@
 
 namespace App\Response;
 
-class PackagePopularity implements \JsonSerializable
+class PackagePopularity
 {
     /** @var string */
     private $name;
@@ -33,21 +33,6 @@ class PackagePopularity implements \JsonSerializable
         $this->count = $count;
         $this->startMonth = $startMonth;
         $this->endMonth = $endMonth;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'name' => $this->getName(),
-            'samples' => $this->getSamples(),
-            'count' => $this->getCount(),
-            'popularity' => $this->getPopularity(),
-            'startMonth' => $this->getStartMonth(),
-            'endMonth' => $this->getEndMonth()
-        ];
     }
 
     /**
