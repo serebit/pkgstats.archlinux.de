@@ -3,7 +3,7 @@
 namespace App\Tests\Service;
 
 use App\Repository\PackageRepository;
-use App\Request\PackageQueryRequest;
+use App\Request\QueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
 use App\Service\PackagePopularityCalculator;
@@ -75,7 +75,7 @@ class PackagePopularityCalculatorTest extends TestCase
         $packagePopularityList = $this->packagePopularityCalculator->findPackagesPopularity(
             new StatisticsRangeRequest(201801, 201812),
             new PaginationRequest(2, 12),
-            new PackageQueryRequest('foo')
+            new QueryRequest('foo')
         );
 
         $this->assertEquals(1, $packagePopularityList->getCount());

@@ -2,7 +2,7 @@
 
 namespace App\ParamConverter;
 
-use App\Request\PackageQueryRequest;
+use App\Request\QueryRequest;
 use App\Request\PkgstatsRequestException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -29,16 +29,16 @@ class QueryParamConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        $packageQueryRequest = new PackageQueryRequest($request->get('query', ''));
+        $queryRequest = new QueryRequest($request->get('query', ''));
 
-        $errors = $this->validator->validate($packageQueryRequest);
+        $errors = $this->validator->validate($queryRequest);
         if ($errors->count() > 0) {
             throw new PkgstatsRequestException($errors);
         }
 
         $request->attributes->set(
             $configuration->getName(),
-            $packageQueryRequest
+            $queryRequest
         );
 
         return true;
@@ -50,6 +50,6 @@ class QueryParamConverter implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration)
     {
-        return $configuration->getClass() == PackageQueryRequest::class;
+        return $configuration->getClass() == QueryRequest::class;
     }
 }

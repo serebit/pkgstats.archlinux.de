@@ -4,7 +4,7 @@ namespace App\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PackageQueryRequest
+class QueryRequest
 {
     /**
      * @var string

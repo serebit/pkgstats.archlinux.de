@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Repository\PackageRepository;
-use App\Request\PackageQueryRequest;
+use App\Request\QueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
 use App\Response\PackagePopularity;
@@ -62,17 +62,17 @@ class PackagePopularityCalculator
     /**
      * @param StatisticsRangeRequest $statisticsRangeRequest
      * @param PaginationRequest $paginationRequest
-     * @param PackageQueryRequest $packageQueryRequest
+     * @param QueryRequest $queryRequest
      * @return PackagePopularityList
      */
     public function findPackagesPopularity(
         StatisticsRangeRequest $statisticsRangeRequest,
         PaginationRequest $paginationRequest,
-        PackageQueryRequest $packageQueryRequest
+        QueryRequest $queryRequest
     ): PackagePopularityList {
         $rangeCount = $this->getRangeCount($statisticsRangeRequest);
         $packages = $this->packageRepository->findPackagesCountByRange(
-            $packageQueryRequest->getQuery(),
+            $queryRequest->getQuery(),
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth(),
             $paginationRequest->getOffset(),

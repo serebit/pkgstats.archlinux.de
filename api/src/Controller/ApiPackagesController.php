@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Request\PackageQueryRequest;
+use App\Request\QueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
 use App\Response\PackagePopularity;
@@ -173,7 +173,7 @@ class ApiPackagesController extends AbstractController
      * )
      * @param StatisticsRangeRequest $statisticsRangeRequest
      * @param PaginationRequest $paginationRequest
-     * @param PackageQueryRequest $packageQueryRequest
+     * @param QueryRequest $queryRequest
      * @return Response
      *
      * @OA\Tag(name="packages")
@@ -239,13 +239,13 @@ class ApiPackagesController extends AbstractController
     public function packageJsonAction(
         StatisticsRangeRequest $statisticsRangeRequest,
         PaginationRequest $paginationRequest,
-        PackageQueryRequest $packageQueryRequest
+        QueryRequest $queryRequest
     ): Response {
         return $this->json(
             $this->packagePopularityCalculator->findPackagesPopularity(
                 $statisticsRangeRequest,
                 $paginationRequest,
-                $packageQueryRequest
+                $queryRequest
             )
         );
     }

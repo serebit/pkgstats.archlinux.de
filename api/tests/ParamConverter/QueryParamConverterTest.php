@@ -3,7 +3,7 @@
 namespace App\Tests\ParamConverter;
 
 use App\ParamConverter\QueryParamConverter;
-use App\Request\PackageQueryRequest;
+use App\Request\QueryRequest;
 use App\Request\PkgstatsRequestException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +34,7 @@ class QueryParamConverterTest extends TestCase
         $configuration
             ->expects($this->once())
             ->method('getClass')
-            ->willReturn(PackageQueryRequest::class);
+            ->willReturn(QueryRequest::class);
 
         $this->assertTrue($this->paramConverter->supports($configuration));
     }
@@ -46,23 +46,23 @@ class QueryParamConverterTest extends TestCase
         $configuration
             ->expects($this->once())
             ->method('getName')
-            ->willReturn(PackageQueryRequest::class);
+            ->willReturn(QueryRequest::class);
 
         $request = Request::create('/get', 'GET', ['query' => 'foo']);
 
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturnCallback(function (PackageQueryRequest $_) {
+            ->willReturnCallback(function (QueryRequest $_) {
                 return new ConstraintViolationList();
             });
 
         $this->assertTrue($this->paramConverter->apply($request, $configuration));
 
-        $this->assertInstanceOf(PackageQueryRequest::class, $request->attributes->get(PackageQueryRequest::class));
-        /** @var PackageQueryRequest $packageQueryRequest */
-        $packageQueryRequest = $request->attributes->get(PackageQueryRequest::class);
-        $this->assertEquals('foo', $packageQueryRequest->getQuery());
+        $this->assertInstanceOf(QueryRequest::class, $request->attributes->get(QueryRequest::class));
+        /** @var QueryRequest $queryRequest */
+        $queryRequest = $request->attributes->get(QueryRequest::class);
+        $this->assertEquals('foo', $queryRequest->getQuery());
     }
 
     public function testDefault(): void
@@ -72,23 +72,23 @@ class QueryParamConverterTest extends TestCase
         $configuration
             ->expects($this->once())
             ->method('getName')
-            ->willReturn(PackageQueryRequest::class);
+            ->willReturn(QueryRequest::class);
 
         $request = Request::create('/get');
 
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturnCallback(function (PackageQueryRequest $_) {
+            ->willReturnCallback(function (QueryRequest $_) {
                 return new ConstraintViolationList();
             });
 
         $this->assertTrue($this->paramConverter->apply($request, $configuration));
 
-        $this->assertInstanceOf(PackageQueryRequest::class, $request->attributes->get(PackageQueryRequest::class));
-        /** @var PackageQueryRequest $packageQueryRequest */
-        $packageQueryRequest = $request->attributes->get(PackageQueryRequest::class);
-        $this->assertEquals('', $packageQueryRequest->getQuery());
+        $this->assertInstanceOf(QueryRequest::class, $request->attributes->get(QueryRequest::class));
+        /** @var QueryRequest $queryRequest */
+        $queryRequest = $request->attributes->get(QueryRequest::class);
+        $this->assertEquals('', $queryRequest->getQuery());
     }
 
     public function testApplyFailsOnValidationErrors(): void
@@ -101,7 +101,7 @@ class QueryParamConverterTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->willReturnCallback(function (PackageQueryRequest $_) {
+            ->willReturnCallback(function (QueryRequest $_) {
                 return new ConstraintViolationList([$this->createMock(ConstraintViolation::class)]);
             });
 
