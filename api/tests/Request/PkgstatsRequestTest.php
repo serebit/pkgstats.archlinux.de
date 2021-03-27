@@ -33,9 +33,9 @@ class PkgstatsRequestTest extends TestCase
         $this->assertSame($package, $packages[0]);
 
         $this->assertNotNull($request->getCountry());
-        $this->assertEquals('DE', $request->getCountry()->getCode());
+        $this->assertEquals('DE', $request->getCountry()->getName());
         $this->assertNotNull($request->getMirror());
-        $this->assertEquals('http://localhost', $request->getMirror()->getUrl());
+        $this->assertEquals('http://localhost', $request->getMirror()->getName());
         $this->assertEquals('x86_64', $request->getOperatingSystemArchitecture()->getName());
         $this->assertEquals('x86_64_v4', $request->getSystemArchitecture()->getName());
     }

@@ -9,16 +9,16 @@ class CountryTest extends TestCase
 {
     public function testSettersAndGetters(): void
     {
-        $country = (new Country('a'))->setMonth(201812);
+        $country = new Country('a', 201812);
 
-        $this->assertEquals('a', $country->getCode());
+        $this->assertEquals('a', $country->getName());
         $this->assertEquals(201812, $country->getMonth());
         $this->assertEquals(1, $country->getCount());
     }
 
     public function testIncrementCount(): void
     {
-        $country = (new Country('a'))->setMonth(201812)
+        $country = (new Country('a', 201812))
             ->incrementCount();
         $this->assertEquals(2, $country->getCount());
     }

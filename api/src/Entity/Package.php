@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\PackageRepository")
  */
-class Package
+class Package implements CountableInterface
 {
     /**
      * @var string
@@ -45,6 +45,19 @@ class Package
     private $count = 1;
 
     /**
+     * @param string $name
+     * @param int|null $month
+     */
+    public function __construct(string $name, ?int $month = null)
+    {
+        $this->name = $name;
+        if ($month === null) {
+            $month = (int)date('Ym');
+        }
+        $this->month = $month;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -53,31 +66,11 @@ class Package
     }
 
     /**
-     * @param string $name
-     * @return Package
-     */
-    public function setName(string $name): Package
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getMonth(): int
     {
         return $this->month;
-    }
-
-    /**
-     * @param int $month
-     * @return Package
-     */
-    public function setMonth(int $month): Package
-    {
-        $this->month = $month;
-        return $this;
     }
 
     /**

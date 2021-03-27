@@ -242,7 +242,7 @@ class ApiPackagesController extends AbstractController
         QueryRequest $queryRequest
     ): Response {
         return $this->json(
-            $this->popularityCalculator->findPackagesPopularity(
+            $this->popularityCalculator->findPopularity(
                 $statisticsRangeRequest,
                 $paginationRequest,
                 $queryRequest

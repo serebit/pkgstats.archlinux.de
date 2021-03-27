@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Repository\PackageRepository;
+use App\Repository\CountableRepositoryInterface;
 use App\Request\QueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
@@ -11,15 +11,15 @@ use App\Response\PopularityList;
 
 class PopularityCalculator
 {
-    /** @var PackageRepository */
-    private $packageRepository;
+    /** @var CountableRepositoryInterface */
+    private $countableRepository;
 
     /**
-     * @param PackageRepository $packageRepository
+     * @param CountableRepositoryInterface $countableRepository
      */
-    public function __construct(PackageRepository $packageRepository)
+    public function __construct(CountableRepositoryInterface $countableRepository)
     {
-        $this->packageRepository = $packageRepository;
+        $this->countableRepository = $countableRepository;
     }
 
     /**
@@ -32,7 +32,7 @@ class PopularityCalculator
         StatisticsRangeRequest $statisticsRangeRequest
     ): Popularity {
         $rangeCount = $this->getRangeCount($statisticsRangeRequest);
-        $packageCount = $this->packageRepository->getCountByNameAndRange(
+        $count = $this->countableRepository->getCountByNameAndRange(
             $name,
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth()
@@ -41,7 +41,7 @@ class PopularityCalculator
         return new Popularity(
             $name,
             $rangeCount,
-            $packageCount,
+            $count,
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth()
         );
@@ -53,7 +53,7 @@ class PopularityCalculator
      */
     private function getRangeCount(StatisticsRangeRequest $statisticsRangeRequest): int
     {
-        return $this->packageRepository->getMaximumCountByRange(
+        return $this->countableRepository->getMaximumCountByRange(
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth()
         );
@@ -65,13 +65,13 @@ class PopularityCalculator
      * @param QueryRequest $queryRequest
      * @return PopularityList
      */
-    public function findPackagesPopularity(
+    public function findPopularity(
         StatisticsRangeRequest $statisticsRangeRequest,
         PaginationRequest $paginationRequest,
         QueryRequest $queryRequest
     ): PopularityList {
         $rangeCount = $this->getRangeCount($statisticsRangeRequest);
-        $packages = $this->packageRepository->findPackagesCountByRange(
+        $countables = $this->countableRepository->findByRange(
             $queryRequest->getQuery(),
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth(),
@@ -80,12 +80,12 @@ class PopularityCalculator
         );
 
         $popularities = iterator_to_array(
-            (function () use ($packages, $rangeCount, $statisticsRangeRequest) {
-                foreach ($packages['packages'] as $package) {
+            (function () use ($countables, $rangeCount, $statisticsRangeRequest) {
+                foreach ($countables['countables'] as $countable) {
                     $popularity = new Popularity(
-                        $package['name'],
+                        $countable['name'],
                         $rangeCount,
-                        $package['count'],
+                        $countable['count'],
                         $statisticsRangeRequest->getStartMonth(),
                         $statisticsRangeRequest->getEndMonth()
                     );
@@ -98,7 +98,7 @@ class PopularityCalculator
 
         return new PopularityList(
             $popularities,
-            $packages['total'],
+            $countables['total'],
             $paginationRequest->getLimit(),
             $paginationRequest->getOffset()
         );
@@ -116,7 +116,7 @@ class PopularityCalculator
         PaginationRequest $paginationRequest
     ): PopularityList {
         $rangeCountSeries = $this->getRangeCountSeries($statisticsRangeRequest);
-        $packages = $this->packageRepository->findMonthlyByNameAndRange(
+        $countables = $this->countableRepository->findMonthlyByNameAndRange(
             $name,
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth(),
@@ -126,16 +126,16 @@ class PopularityCalculator
 
         $popularities = iterator_to_array(
             (function () use (
-                $packages,
+                $countables,
                 $rangeCountSeries
             ) {
-                foreach ($packages['packages'] as $package) {
+                foreach ($countables['countables'] as $countable) {
                     $popularity = new Popularity(
-                        $package['name'],
-                        $rangeCountSeries[$package['month']],
-                        $package['count'],
-                        $package['month'],
-                        $package['month']
+                        $countable['name'],
+                        $rangeCountSeries[$countable['month']],
+                        $countable['count'],
+                        $countable['month'],
+                        $countable['month']
                     );
                     if ($popularity->getPopularity() > 0) {
                         yield $popularity;
@@ -146,7 +146,7 @@ class PopularityCalculator
 
         return new PopularityList(
             $popularities,
-            $packages['total'],
+            $countables['total'],
             $paginationRequest->getLimit(),
             $paginationRequest->getOffset()
         );
@@ -158,7 +158,7 @@ class PopularityCalculator
      */
     private function getRangeCountSeries(StatisticsRangeRequest $statisticsRangeRequest): array
     {
-        $monthlyCount = $this->packageRepository->getMonthlyMaximumCountByRange(
+        $monthlyCount = $this->countableRepository->getMonthlyMaximumCountByRange(
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth()
         );

@@ -3,10 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Mirror;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class MirrorRepository extends ServiceEntityRepository
+class MirrorRepository extends CountableRepository
 {
     /**
      * @param ManagerRegistry $registry

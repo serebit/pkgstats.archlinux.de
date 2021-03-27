@@ -54,7 +54,7 @@ class PkgstatsRequestV2DenormalizerTest extends TestCase
         $this->assertEquals('x86_64', $pkgstatsRequest->getOperatingSystemArchitecture()->getName());
         $this->assertEquals('x86_64', $pkgstatsRequest->getSystemArchitecture()->getName());
         $this->assertNotNull($pkgstatsRequest->getMirror());
-        $this->assertEquals('https://mirror.archlinux.de/', $pkgstatsRequest->getMirror()->getUrl());
+        $this->assertEquals('https://mirror.archlinux.de/', $pkgstatsRequest->getMirror()->getName());
     }
 
     public function testDenormalizePackages(): void

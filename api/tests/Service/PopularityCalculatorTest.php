@@ -54,10 +54,10 @@ class PopularityCalculatorTest extends TestCase
         $this
             ->packageRepository
             ->expects($this->once())
-            ->method('findPackagesCountByRange')
+            ->method('findByRange')
             ->with('foo', 201801, 201812, 2, 12)
             ->willReturn([
-                'packages' => [
+                'countables' => [
                     [
                         'name' => 'foo',
                         'count' => 43
@@ -72,7 +72,7 @@ class PopularityCalculatorTest extends TestCase
             ->with(201801, 201812)
             ->willReturn(44);
 
-        $popularityList = $this->popularityCalculator->findPackagesPopularity(
+        $popularityList = $this->popularityCalculator->findPopularity(
             new StatisticsRangeRequest(201801, 201812),
             new PaginationRequest(2, 12),
             new QueryRequest('foo')
@@ -101,7 +101,7 @@ class PopularityCalculatorTest extends TestCase
             ->method('findMonthlyByNameAndRange')
             ->with('foo', 201801, 201812, 2, 12)
             ->willReturn([
-                'packages' => [
+                'countables' => [
                     [
                         'name' => 'foo',
                         'count' => 43,

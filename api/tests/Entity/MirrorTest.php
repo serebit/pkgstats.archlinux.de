@@ -9,16 +9,16 @@ class MirrorTest extends TestCase
 {
     public function testSettersAndGetters(): void
     {
-        $mirror = (new Mirror('a'))->setMonth(201812);
+        $mirror = new Mirror('a', 201812);
 
-        $this->assertEquals('a', $mirror->getUrl());
+        $this->assertEquals('a', $mirror->getName());
         $this->assertEquals(201812, $mirror->getMonth());
         $this->assertEquals(1, $mirror->getCount());
     }
 
     public function testIncrementCount(): void
     {
-        $mirror = (new Mirror('a'))->setMonth(201812)
+        $mirror = (new Mirror('a', 201812))
             ->incrementCount();
         $this->assertEquals(2, $mirror->getCount());
     }

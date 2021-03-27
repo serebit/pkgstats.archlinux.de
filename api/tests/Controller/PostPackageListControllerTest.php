@@ -32,7 +32,7 @@ class PostPackageListControllerTest extends DatabaseTestCase
         $mirrorRepository = $this->getEntityManager()->getRepository(Mirror::class);
         $mirrors = $mirrorRepository->findAll();
         $this->assertCount(1, $mirrors);
-        $this->assertEquals('https://mirror.archlinux.de/', $mirrors[0]->getUrl());
+        $this->assertEquals('https://mirror.archlinux.de/', $mirrors[0]->getName());
 
         $operatingSystemArchitectureRepository = $this->getEntityManager()->getRepository(
             OperatingSystemArchitecture::class
@@ -83,7 +83,7 @@ class PostPackageListControllerTest extends DatabaseTestCase
         $mirrorRepository = $this->getEntityManager()->getRepository(Mirror::class);
         $mirrors = $mirrorRepository->findAll();
         $this->assertCount(1, $mirrors);
-        $this->assertEquals('https://mirror.archlinux.de/', $mirrors[0]->getUrl());
+        $this->assertEquals('https://mirror.archlinux.de/', $mirrors[0]->getName());
 
         $operatingSystemArchitectureRepository = $this->getEntityManager()->getRepository(
             OperatingSystemArchitecture::class
@@ -355,11 +355,7 @@ class PostPackageListControllerTest extends DatabaseTestCase
 
     public function testPostPackageListIncrementsPackageCount(): void
     {
-        $this->getEntityManager()->persist(
-            (new Package())
-                ->setName('pkgstats')
-                ->setMonth((int)date('Ym'))
-        );
+        $this->getEntityManager()->persist(new Package('pkgstats'));
 
         $client = $this->createPkgstatsClient();
         $this->sendRequest($client, packages: ['pkgstats']);

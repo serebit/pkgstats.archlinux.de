@@ -194,7 +194,7 @@ class PkgstatsRequest
                 $validArchitectures = [];
         }
 
-        if (!in_array($this->getOperatingSystemArchitecture(), $validArchitectures)) {
+        if (!in_array($this->getOperatingSystemArchitecture()->getName(), $validArchitectures)) {
             $context->buildViolation('Invalid Operating System Architecture')
                 ->atPath('operatingSystemArchitecture')
                 ->addViolation();
@@ -229,7 +229,7 @@ class PkgstatsRequest
                 $validSystemArchitectures = [];
         }
 
-        if (!in_array($this->getSystemArchitecture(), $validSystemArchitectures)) {
+        if (!in_array($this->getSystemArchitecture()->getName(), $validSystemArchitectures)) {
             $context->buildViolation('Invalid System Architecture')
                 ->atPath('systemArchitecture')
                 ->addViolation();

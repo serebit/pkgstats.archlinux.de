@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SystemArchitectureRepository")
  */
-class SystemArchitecture
+class SystemArchitecture implements CountableInterface
 {
     /**
      * @var string
@@ -45,10 +45,15 @@ class SystemArchitecture
 
     /**
      * @param string $name
+     * @param int|null $month
      */
-    public function __construct(string $name)
+    public function __construct(string $name, ?int $month = null)
     {
         $this->name = $name;
+        if ($month === null) {
+            $month = (int)date('Ym');
+        }
+        $this->month = $month;
     }
 
     /**
@@ -68,16 +73,6 @@ class SystemArchitecture
     }
 
     /**
-     * @param int $month
-     * @return SystemArchitecture
-     */
-    public function setMonth(int $month): SystemArchitecture
-    {
-        $this->month = $month;
-        return $this;
-    }
-
-    /**
      * @return SystemArchitecture
      */
     public function incrementCount(): SystemArchitecture
@@ -92,13 +87,5 @@ class SystemArchitecture
     public function getCount(): ?int
     {
         return $this->count;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->getName();
     }
 }

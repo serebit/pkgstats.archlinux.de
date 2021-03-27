@@ -18,9 +18,7 @@ class ApiPackagesControllerTest extends DatabaseTestCase
     public function testFetchAllPackages(string $packageName): void
     {
         $entityManager = $this->getEntityManager();
-        $package = (new Package())
-            ->setName($packageName)
-            ->setMonth((int)(new \DateTime())->format('Ym'));
+        $package = new Package($packageName);
         $entityManager->persist($package);
         $entityManager->flush();
 
@@ -118,9 +116,7 @@ class ApiPackagesControllerTest extends DatabaseTestCase
     public function testFetchSinglePackage(string $packageName): void
     {
         $entityManager = $this->getEntityManager();
-        $package = (new Package())
-            ->setName($packageName)
-            ->setMonth((int)(new \DateTime())->format('Ym'));
+        $package = new Package($packageName);
         $entityManager->persist($package);
         $entityManager->flush();
 
@@ -137,12 +133,8 @@ class ApiPackagesControllerTest extends DatabaseTestCase
     public function testQueryRequest(): void
     {
         $entityManager = $this->getEntityManager();
-        $pacman = (new Package())
-            ->setName('pacman')
-            ->setMonth(201901);
-        $php = (new Package())
-            ->setName('php')
-            ->setMonth(201901);
+        $pacman = new Package('pacman', 201901);
+        $php = new Package('php', 201901);
         $entityManager->persist($pacman);
         $entityManager->persist($php);
         $entityManager->flush();
@@ -162,12 +154,8 @@ class ApiPackagesControllerTest extends DatabaseTestCase
     public function testFilterByDate(): void
     {
         $entityManager = $this->getEntityManager();
-        $pacman = (new Package())
-            ->setName('pacman')
-            ->setMonth(201901);
-        $php = (new Package())
-            ->setName('php')
-            ->setMonth(201801);
+        $pacman = new Package('pacman', 201901);
+        $php = new Package('php', 201801);
         $entityManager->persist($pacman);
         $entityManager->persist($php);
         $entityManager->flush();
@@ -187,15 +175,9 @@ class ApiPackagesControllerTest extends DatabaseTestCase
     public function testLimitResults(): void
     {
         $entityManager = $this->getEntityManager();
-        $pacman = (new Package())
-            ->setName('pacman')
-            ->setMonth(201901);
-        $php = (new Package())
-            ->setName('php')
-            ->setMonth(201901);
-        $anotherPhp = (new Package())
-            ->setName('php')
-            ->setMonth(201902);
+        $pacman = new Package('pacman', 201901);
+        $php = new Package('php', 201901);
+        $anotherPhp = new Package('php', 201902);
         $entityManager->persist($pacman);
         $entityManager->persist($php);
         $entityManager->persist($anotherPhp);
@@ -222,9 +204,7 @@ class ApiPackagesControllerTest extends DatabaseTestCase
     public function testPackagesSeries(string $packageName): void
     {
         $entityManager = $this->getEntityManager();
-        $package = (new Package())
-            ->setName($packageName)
-            ->setMonth(201901);
+        $package = new Package($packageName, 201901);
         $entityManager->persist($package);
         $entityManager->flush();
 

@@ -8,13 +8,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(
  *     indexes={
- *          @ORM\Index(name="mirror_month_url", columns={"month", "url"}),
+ *          @ORM\Index(name="mirror_month_name", columns={"month", "name"}),
  *          @ORM\Index(name="mirror_month", columns={"month"})
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MirrorRepository")
  */
-class Mirror
+class Mirror implements CountableInterface
 {
     /**
      * @var string
@@ -22,10 +22,10 @@ class Mirror
      * @Assert\Length(max=255)
      * @Assert\Url(protocols={"http", "https", "ftp"})
      *
-     * @ORM\Column(name="url", type="string", length=191)
+     * @ORM\Column(name="name", type="string", length=191)
      * @ORM\Id
      */
-    private $url;
+    private $name;
 
     /**
      * @var integer
@@ -46,19 +46,24 @@ class Mirror
     private $count = 1;
 
     /**
-     * @param string $url
+     * @param string $name
+     * @param int|null $month
      */
-    public function __construct(string $url)
+    public function __construct(string $name, ?int $month = null)
     {
-        $this->url = $url;
+        $this->name = $name;
+        if ($month === null) {
+            $month = (int)date('Ym');
+        }
+        $this->month = $month;
     }
 
     /**
      * @return string
      */
-    public function getUrl(): string
+    public function getName(): string
     {
-        return $this->url;
+        return $this->name;
     }
 
     /**
@@ -67,16 +72,6 @@ class Mirror
     public function getMonth(): int
     {
         return $this->month;
-    }
-
-    /**
-     * @param int $month
-     * @return Mirror
-     */
-    public function setMonth(int $month): Mirror
-    {
-        $this->month = $month;
-        return $this;
     }
 
     /**

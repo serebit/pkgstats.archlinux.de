@@ -186,7 +186,7 @@ class PostPackageListController extends AbstractController
         /** @var Country|null $persistedCountry */
         $persistedCountry = $entityManager->find(
             Country::class,
-            ['code' => $country->getCode(), 'month' => $country->getMonth()],
+            ['name' => $country->getName(), 'month' => $country->getMonth()],
             LockMode::PESSIMISTIC_WRITE
         );
         if ($persistedCountry) {
@@ -209,7 +209,7 @@ class PostPackageListController extends AbstractController
         /** @var Mirror|null $persistedMirror */
         $persistedMirror = $entityManager->find(
             Mirror::class,
-            ['url' => $mirror->getUrl(), 'month' => $mirror->getMonth()],
+            ['name' => $mirror->getName(), 'month' => $mirror->getMonth()],
             LockMode::PESSIMISTIC_WRITE
         );
         if ($persistedMirror) {

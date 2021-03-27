@@ -8,23 +8,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(
  *     indexes={
- *          @ORM\Index(name="country_month_code", columns={"month", "code"}),
+ *          @ORM\Index(name="country_month_name", columns={"month", "name"}),
  *          @ORM\Index(name="country_month", columns={"month"})
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
  */
-class Country
+class Country implements CountableInterface
 {
     /**
      * @var string
      * @Assert\NotBlank
      * @Assert\Country
      *
-     * @ORM\Column(name="code", type="string", length=2)
+     * @ORM\Column(name="name", type="string", length=2)
      * @ORM\Id
      */
-    private $code;
+    private $name;
 
     /**
      * @var integer
@@ -45,19 +45,24 @@ class Country
     private $count = 1;
 
     /**
-     * @param string $code
+     * @param string $name
+     * @param int|null $month
      */
-    public function __construct(string $code)
+    public function __construct(string $name, ?int $month = null)
     {
-        $this->code = $code;
+        $this->name = $name;
+        if ($month === null) {
+            $month = (int)date('Ym');
+        }
+        $this->month = $month;
     }
 
     /**
      * @return string
      */
-    public function getCode(): string
+    public function getName(): string
     {
-        return $this->code;
+        return $this->name;
     }
 
     /**
@@ -66,16 +71,6 @@ class Country
     public function getMonth(): int
     {
         return $this->month;
-    }
-
-    /**
-     * @param int $month
-     * @return Country
-     */
-    public function setMonth(int $month): Country
-    {
-        $this->month = $month;
-        return $this;
     }
 
     /**

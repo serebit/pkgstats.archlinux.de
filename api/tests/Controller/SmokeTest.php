@@ -17,9 +17,7 @@ class SmokeTest extends DatabaseTestCase
     public function testRequestIsSuccessful(string $url): void
     {
         $entityManager = $this->getEntityManager();
-        $package = (new Package())
-            ->setName('pacman')
-            ->setMonth(201812);
+        $package = new Package('pacman', 201812);
         $entityManager->persist($package);
         $entityManager->flush();
 

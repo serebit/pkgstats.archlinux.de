@@ -3,10 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\SystemArchitecture;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class SystemArchitectureRepository extends ServiceEntityRepository
+class SystemArchitectureRepository extends CountableRepository
 {
     /**
      * @param ManagerRegistry $registry
