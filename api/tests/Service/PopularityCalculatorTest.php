@@ -6,25 +6,25 @@ use App\Repository\PackageRepository;
 use App\Request\QueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
-use App\Service\PackagePopularityCalculator;
+use App\Service\PopularityCalculator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class PackagePopularityCalculatorTest extends TestCase
+class PopularityCalculatorTest extends TestCase
 {
     /** @var PackageRepository|MockObject */
     private $packageRepository;
 
-    /** @var PackagePopularityCalculator */
-    private $packagePopularityCalculator;
+    /** @var PopularityCalculator */
+    private $popularityCalculator;
 
     public function setUp(): void
     {
         $this->packageRepository = $this->createMock(PackageRepository::class);
-        $this->packagePopularityCalculator = new PackagePopularityCalculator($this->packageRepository);
+        $this->popularityCalculator = new PopularityCalculator($this->packageRepository);
     }
 
-    public function testGetPackagePopularity(): void
+    public function testGetPopularity(): void
     {
         $this
             ->packageRepository
@@ -39,14 +39,14 @@ class PackagePopularityCalculatorTest extends TestCase
             ->with(201801, 201812)
             ->willReturn(43);
 
-        $packagePopularity = $this->packagePopularityCalculator->getPackagePopularity(
+        $popularity = $this->popularityCalculator->getPopularity(
             'foo',
             new StatisticsRangeRequest(201801, 201812)
         );
 
-        $this->assertEquals('foo', $packagePopularity->getName());
-        $this->assertEquals(42, $packagePopularity->getCount());
-        $this->assertEquals(43, $packagePopularity->getSamples());
+        $this->assertEquals('foo', $popularity->getName());
+        $this->assertEquals(42, $popularity->getCount());
+        $this->assertEquals(43, $popularity->getSamples());
     }
 
     public function testFindPackagesPopularity(): void
@@ -72,16 +72,16 @@ class PackagePopularityCalculatorTest extends TestCase
             ->with(201801, 201812)
             ->willReturn(44);
 
-        $packagePopularityList = $this->packagePopularityCalculator->findPackagesPopularity(
+        $popularityList = $this->popularityCalculator->findPackagesPopularity(
             new StatisticsRangeRequest(201801, 201812),
             new PaginationRequest(2, 12),
             new QueryRequest('foo')
         );
 
-        $this->assertEquals(1, $packagePopularityList->getCount());
+        $this->assertEquals(1, $popularityList->getCount());
     }
 
-    public function testGetPackagePopularitySeries(): void
+    public function testGetPopularitySeries(): void
     {
         $this
             ->packageRepository
@@ -111,12 +111,12 @@ class PackagePopularityCalculatorTest extends TestCase
                 'total' => 13
             ]);
 
-        $packagePopularitySeries = $this->packagePopularityCalculator->getPackagePopularitySeries(
+        $popularitySeries = $this->popularityCalculator->getPopularitySeries(
             'foo',
             new StatisticsRangeRequest(201801, 201812),
             new PaginationRequest(2, 12)
         );
 
-        $this->assertEquals(1, $packagePopularitySeries->getCount());
+        $this->assertEquals(1, $popularitySeries->getCount());
     }
 }

@@ -8,7 +8,7 @@
         v-model="query"></b-form-input>
     </b-form-group>
     <loading-spinner absolute v-if="loading && offset === 0"></loading-spinner>
-    <table class="table table-striped table-bordered table-sm" v-show="data.packagePopularities.length > 0">
+    <table class="table table-striped table-bordered table-sm" v-show="data.popularities.length > 0">
       <thead>
       <tr>
         <th scope="col">Package</th>
@@ -16,7 +16,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr :key="id" v-for="(pkg, id) in data.packagePopularities">
+      <tr :key="id" v-for="(pkg, id) in data.popularities">
         <td class="text-nowrap">
           <router-link :to="{name: 'package', params: {package: pkg.name}}">{{ pkg.name }}</router-link>
         </td>
@@ -69,7 +69,7 @@ export default {
         total: this.limit,
         limit: this.limit,
         offset: 0,
-        packagePopularities: this.createInitialPackagePopularities()
+        popularities: this.createInitialPopularities()
       },
       query: this.initialQuery,
       error: '',
@@ -103,14 +103,14 @@ export default {
               this.data = data
             } else {
               this.data.count += data.count
-              this.data.packagePopularities.push(...data.packagePopularities)
+              this.data.popularities.push(...data.popularities)
             }
           }
         })
         .catch(error => { this.error = error })
         .finally(() => { this.loading = false })
     },
-    createInitialPackagePopularities () {
+    createInitialPopularities () {
       return Array.from({ length: this.limit }, () => ({
         name: String.fromCharCode(8239),
         popularity: 0

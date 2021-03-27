@@ -7,7 +7,7 @@
         <col class="w-25">
         <col class="w-75">
       </colgroup>
-      <tr :key="packagePopularity.name" v-for="packagePopularity in packagePopularities">
+      <tr :key="packagePopularity.name" v-for="packagePopularity in popularities">
         <td>
           <router-link :to="{name: 'package', params:{package: packagePopularity.name}}">{{ packagePopularity.name }}
           </router-link>
@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       loading: false,
-      packagePopularities: this.packages.map(pkg => ({ name: pkg, popularity: 0 })),
+      popularities: this.packages.map(pkg => ({ name: pkg, popularity: 0 })),
       error: ''
     }
   },
@@ -63,7 +63,7 @@ export default {
     fetchData () {
       this.loading = true
       Promise.all(this.packages.map(pkg => this.apiPackagesService.fetchPackagePopularity(pkg)))
-        .then(dataArray => { this.packagePopularities = this.sortPackagesByPopularity(dataArray) })
+        .then(dataArray => { this.popularities = this.sortPackagesByPopularity(dataArray) })
         .catch(error => { this.error = error })
         .finally(() => { this.loading = false })
     }

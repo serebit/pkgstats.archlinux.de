@@ -2,11 +2,11 @@
 
 namespace App\Tests\Serializer;
 
-use App\Response\PackagePopularity;
+use App\Response\Popularity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Serializer\Serializer;
 
-class PackagePopularityNormalizerTest extends KernelTestCase
+class PopularityNormalizerTest extends KernelTestCase
 {
     /** @var Serializer */
     private $serializer;
@@ -19,9 +19,9 @@ class PackagePopularityNormalizerTest extends KernelTestCase
 
     public function testNormalize(): void
     {
-        $packagePopularity = new PackagePopularity('pacman', 22, 13, 201901, 201902);
+        $popularity = new Popularity('pacman', 22, 13, 201901, 201902);
 
-        $json = $this->serializer->serialize($packagePopularity, 'json');
+        $json = $this->serializer->serialize($popularity, 'json');
         $this->assertJson($json);
         $jsonArray = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         $this->assertEquals(

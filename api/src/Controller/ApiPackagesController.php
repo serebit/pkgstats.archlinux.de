@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Request\QueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
-use App\Response\PackagePopularity;
-use App\Response\PackagePopularityList;
-use App\Service\PackagePopularityCalculator;
+use App\Response\Popularity;
+use App\Response\PopularityList;
+use App\Service\PopularityCalculator;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -20,15 +20,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ApiPackagesController extends AbstractController
 {
-    /** @var PackagePopularityCalculator */
-    private $packagePopularityCalculator;
+    /** @var PopularityCalculator */
+    private $popularityCalculator;
 
     /**
-     * @param PackagePopularityCalculator $packagePopularityCalculator
+     * @param PopularityCalculator $popularityCalculator
      */
-    public function __construct(PackagePopularityCalculator $packagePopularityCalculator)
+    public function __construct(PopularityCalculator $popularityCalculator)
     {
-        $this->packagePopularityCalculator = $packagePopularityCalculator;
+        $this->popularityCalculator = $popularityCalculator;
     }
 
     /**
@@ -46,7 +46,7 @@ class ApiPackagesController extends AbstractController
      * @OA\Response(
      *     description="Returns popularity of given package",
      *     response=200,
-     *     @Model(type=PackagePopularity::class)
+     *     @Model(type=Popularity::class)
      * )
      * @OA\Parameter(
      *     in="path",
@@ -78,7 +78,7 @@ class ApiPackagesController extends AbstractController
     public function packageAction(string $name, StatisticsRangeRequest $statisticsRangeRequest): Response
     {
         return $this->json(
-            $this->packagePopularityCalculator->getPackagePopularity($name, $statisticsRangeRequest)
+            $this->popularityCalculator->getPopularity($name, $statisticsRangeRequest)
         );
     }
 
@@ -98,7 +98,7 @@ class ApiPackagesController extends AbstractController
      * @OA\Response(
      *     description="Returns popularities of given package in a monthly series",
      *     response=200,
-     *     @Model(type=PackagePopularityList::class)
+     *     @Model(type=PopularityList::class)
      * )
      * @OA\Parameter(
      *     in="path",
@@ -157,7 +157,7 @@ class ApiPackagesController extends AbstractController
         PaginationRequest $paginationRequest
     ): Response {
         return $this->json(
-            $this->packagePopularityCalculator->getPackagePopularitySeries(
+            $this->popularityCalculator->getPopularitySeries(
                 $name,
                 $statisticsRangeRequest,
                 $paginationRequest
@@ -180,7 +180,7 @@ class ApiPackagesController extends AbstractController
      * @OA\Response(
      *     description="Returns list of package popularities",
      *     response=200,
-     *     @Model(type=PackagePopularityList::class)
+     *     @Model(type=PopularityList::class)
      * )
      * @OA\Parameter(
      *     name="startMonth",
@@ -242,7 +242,7 @@ class ApiPackagesController extends AbstractController
         QueryRequest $queryRequest
     ): Response {
         return $this->json(
-            $this->packagePopularityCalculator->findPackagesPopularity(
+            $this->popularityCalculator->findPackagesPopularity(
                 $statisticsRangeRequest,
                 $paginationRequest,
                 $queryRequest

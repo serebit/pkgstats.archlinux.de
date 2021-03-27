@@ -56,10 +56,10 @@ class ApiPackagesControllerTest extends DatabaseTestCase
         $this->assertIsInt($packageList['total']);
         $this->assertArrayHasKey('count', $packageList);
         $this->assertIsInt($packageList['count']);
-        $this->assertArrayHasKey('packagePopularities', $packageList);
-        $this->assertIsArray($packageList['packagePopularities']);
+        $this->assertArrayHasKey('popularities', $packageList);
+        $this->assertIsArray($packageList['popularities']);
 
-        foreach ($packageList['packagePopularities'] as $package) {
+        foreach ($packageList['popularities'] as $package) {
             $this->assertPackagePupularity((string)json_encode($package));
         }
 
@@ -155,8 +155,8 @@ class ApiPackagesControllerTest extends DatabaseTestCase
         $this->assertAllowsCrossOriginAccess($client->getResponse());
         $this->assertIsString($client->getResponse()->getContent());
         $pupularityList = $this->assertPackagePupularityList($client->getResponse()->getContent());
-        $this->assertCount(1, $pupularityList['packagePopularities']);
-        $this->assertEquals('pacman', $pupularityList['packagePopularities'][0]['name']);
+        $this->assertCount(1, $pupularityList['popularities']);
+        $this->assertEquals('pacman', $pupularityList['popularities'][0]['name']);
     }
 
     public function testFilterByDate(): void
@@ -180,8 +180,8 @@ class ApiPackagesControllerTest extends DatabaseTestCase
         $this->assertAllowsCrossOriginAccess($client->getResponse());
         $this->assertIsString($client->getResponse()->getContent());
         $pupularityList = $this->assertPackagePupularityList($client->getResponse()->getContent());
-        $this->assertCount(1, $pupularityList['packagePopularities']);
-        $this->assertEquals('php', $pupularityList['packagePopularities'][0]['name']);
+        $this->assertCount(1, $pupularityList['popularities']);
+        $this->assertEquals('php', $pupularityList['popularities'][0]['name']);
     }
 
     public function testLimitResults(): void
@@ -211,8 +211,8 @@ class ApiPackagesControllerTest extends DatabaseTestCase
         $pupularityList = $this->assertPackagePupularityList($client->getResponse()->getContent());
         $this->assertEquals(2, $pupularityList['total']);
         $this->assertEquals(1, $pupularityList['count']);
-        $this->assertCount(1, $pupularityList['packagePopularities']);
-        $this->assertEquals('php', $pupularityList['packagePopularities'][0]['name']);
+        $this->assertCount(1, $pupularityList['popularities']);
+        $this->assertEquals('php', $pupularityList['popularities'][0]['name']);
     }
 
     /**
@@ -238,8 +238,8 @@ class ApiPackagesControllerTest extends DatabaseTestCase
         $pupularityList = $this->assertPackagePupularityList($client->getResponse()->getContent());
         $this->assertEquals(1, $pupularityList['total']);
         $this->assertEquals(1, $pupularityList['count']);
-        $this->assertCount(1, $pupularityList['packagePopularities']);
-        $this->assertEquals($packageName, $pupularityList['packagePopularities'][0]['name']);
+        $this->assertCount(1, $pupularityList['popularities']);
+        $this->assertEquals($packageName, $pupularityList['popularities'][0]['name']);
     }
 
     /**

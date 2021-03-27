@@ -6,10 +6,10 @@ use App\Repository\PackageRepository;
 use App\Request\QueryRequest;
 use App\Request\PaginationRequest;
 use App\Request\StatisticsRangeRequest;
-use App\Response\PackagePopularity;
-use App\Response\PackagePopularityList;
+use App\Response\Popularity;
+use App\Response\PopularityList;
 
-class PackagePopularityCalculator
+class PopularityCalculator
 {
     /** @var PackageRepository */
     private $packageRepository;
@@ -25,12 +25,12 @@ class PackagePopularityCalculator
     /**
      * @param string $name
      * @param StatisticsRangeRequest $statisticsRangeRequest
-     * @return PackagePopularity
+     * @return Popularity
      */
-    public function getPackagePopularity(
+    public function getPopularity(
         string $name,
         StatisticsRangeRequest $statisticsRangeRequest
-    ): PackagePopularity {
+    ): Popularity {
         $rangeCount = $this->getRangeCount($statisticsRangeRequest);
         $packageCount = $this->packageRepository->getCountByNameAndRange(
             $name,
@@ -38,7 +38,7 @@ class PackagePopularityCalculator
             $statisticsRangeRequest->getEndMonth()
         );
 
-        return new PackagePopularity(
+        return new Popularity(
             $name,
             $rangeCount,
             $packageCount,
@@ -63,13 +63,13 @@ class PackagePopularityCalculator
      * @param StatisticsRangeRequest $statisticsRangeRequest
      * @param PaginationRequest $paginationRequest
      * @param QueryRequest $queryRequest
-     * @return PackagePopularityList
+     * @return PopularityList
      */
     public function findPackagesPopularity(
         StatisticsRangeRequest $statisticsRangeRequest,
         PaginationRequest $paginationRequest,
         QueryRequest $queryRequest
-    ): PackagePopularityList {
+    ): PopularityList {
         $rangeCount = $this->getRangeCount($statisticsRangeRequest);
         $packages = $this->packageRepository->findPackagesCountByRange(
             $queryRequest->getQuery(),
@@ -79,25 +79,25 @@ class PackagePopularityCalculator
             $paginationRequest->getLimit()
         );
 
-        $packagePopularities = iterator_to_array(
+        $popularities = iterator_to_array(
             (function () use ($packages, $rangeCount, $statisticsRangeRequest) {
                 foreach ($packages['packages'] as $package) {
-                    $packagePopularity = new PackagePopularity(
+                    $popularity = new Popularity(
                         $package['name'],
                         $rangeCount,
                         $package['count'],
                         $statisticsRangeRequest->getStartMonth(),
                         $statisticsRangeRequest->getEndMonth()
                     );
-                    if ($packagePopularity->getPopularity() > 0) {
-                        yield $packagePopularity;
+                    if ($popularity->getPopularity() > 0) {
+                        yield $popularity;
                     }
                 }
             })()
         );
 
-        return new PackagePopularityList(
-            $packagePopularities,
+        return new PopularityList(
+            $popularities,
             $packages['total'],
             $paginationRequest->getLimit(),
             $paginationRequest->getOffset()
@@ -108,13 +108,13 @@ class PackagePopularityCalculator
      * @param string $name
      * @param StatisticsRangeRequest $statisticsRangeRequest
      * @param PaginationRequest $paginationRequest
-     * @return PackagePopularityList
+     * @return PopularityList
      */
-    public function getPackagePopularitySeries(
+    public function getPopularitySeries(
         string $name,
         StatisticsRangeRequest $statisticsRangeRequest,
         PaginationRequest $paginationRequest
-    ): PackagePopularityList {
+    ): PopularityList {
         $rangeCountSeries = $this->getRangeCountSeries($statisticsRangeRequest);
         $packages = $this->packageRepository->findMonthlyByNameAndRange(
             $name,
@@ -124,28 +124,28 @@ class PackagePopularityCalculator
             $paginationRequest->getLimit()
         );
 
-        $packagePopularities = iterator_to_array(
+        $popularities = iterator_to_array(
             (function () use (
                 $packages,
                 $rangeCountSeries
             ) {
                 foreach ($packages['packages'] as $package) {
-                    $packagePopularity = new PackagePopularity(
+                    $popularity = new Popularity(
                         $package['name'],
                         $rangeCountSeries[$package['month']],
                         $package['count'],
                         $package['month'],
                         $package['month']
                     );
-                    if ($packagePopularity->getPopularity() > 0) {
-                        yield $packagePopularity;
+                    if ($popularity->getPopularity() > 0) {
+                        yield $popularity;
                     }
                 }
             })()
         );
 
-        return new PackagePopularityList(
-            $packagePopularities,
+        return new PopularityList(
+            $popularities,
             $packages['total'],
             $paginationRequest->getLimit(),
             $paginationRequest->getOffset()

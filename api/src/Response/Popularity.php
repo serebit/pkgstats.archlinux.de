@@ -2,7 +2,7 @@
 
 namespace App\Response;
 
-class PackagePopularity
+class Popularity
 {
     /** @var string */
     private $name;

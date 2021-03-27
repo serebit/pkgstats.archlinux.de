@@ -2,7 +2,7 @@ import convertToDataSeries from '../../src/services/DataSeriesConverter'
 
 it('Converting an Array to a data series', () =>
   expect(convertToDataSeries([
-    { packagePopularities: [{ name: 'nodejs', popularity: 64.01, startMonth: 201909 }] }
+    { popularities: [{ name: 'nodejs', popularity: 64.01, startMonth: 201909 }] }
   ]))
     .toStrictEqual({
       labels: [201909],
@@ -14,8 +14,8 @@ it('Converting an Array to a data series', () =>
 
 it('Converting multiple Arrays to data series', () =>
   expect(convertToDataSeries([
-    { packagePopularities: [{ name: 'nodejs', popularity: 64.01, startMonth: 201909 }] },
-    { packagePopularities: [{ name: 'php', popularity: 32.69, startMonth: 201909 }] }
+    { popularities: [{ name: 'nodejs', popularity: 64.01, startMonth: 201909 }] },
+    { popularities: [{ name: 'php', popularity: 32.69, startMonth: 201909 }] }
   ]))
     .toStrictEqual({
       labels: [201909],
@@ -28,9 +28,9 @@ it('Converting multiple Arrays to data series', () =>
 
 it('Converting multiple incomplete Arrays to a consistent data series', () =>
   expect(convertToDataSeries([
-    { packagePopularities: [{ name: 'nodejs', popularity: 64.01, startMonth: 201909 }] },
+    { popularities: [{ name: 'nodejs', popularity: 64.01, startMonth: 201909 }] },
     {
-      packagePopularities: [
+      popularities: [
         { name: 'php', popularity: 32.69, startMonth: 201908 },
         { name: 'php', popularity: 12, startMonth: 201909 }
       ]
@@ -46,6 +46,6 @@ it('Converting multiple incomplete Arrays to a consistent data series', () =>
 )
 
 it('Converting an incomplete Array to an empty data series', () =>
-  expect(convertToDataSeries([{ packagePopularities: [] }]))
+  expect(convertToDataSeries([{ popularities: [] }]))
     .toStrictEqual({ labels: [], series: [] })
 )

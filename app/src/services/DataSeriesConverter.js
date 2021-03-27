@@ -1,9 +1,9 @@
-export default function convertToDataSeries (PackagepopularitiesArray) {
+export default function convertToDataSeries (PopularitiesArray) {
   const tempSeries = new Map()
   const tempLabels = new Set()
 
-  PackagepopularitiesArray.filter(data => data).forEach(result => {
-    result.packagePopularities.forEach((packagePopularity) => {
+  PopularitiesArray.filter(data => data).forEach(result => {
+    result.popularities.forEach((packagePopularity) => {
       tempLabels.add(packagePopularity.startMonth)
       let tempData
       if (tempSeries.has(packagePopularity.name)) {

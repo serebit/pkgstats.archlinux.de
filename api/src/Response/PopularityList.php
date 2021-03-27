@@ -2,12 +2,12 @@
 
 namespace App\Response;
 
-class PackagePopularityList
+class PopularityList
 {
     /**
-     * @var PackagePopularity[]
+     * @var Popularity[]
      */
-    private $packagePopularities;
+    private $popularities;
 
     /**
      * @var int
@@ -25,14 +25,14 @@ class PackagePopularityList
     private $offset;
 
     /**
-     * @param PackagePopularity[] $packagePopularities
+     * @param Popularity[] $popularities
      * @param int $total
      * @param int $limit
      * @param int $offset
      */
-    public function __construct(array $packagePopularities, int $total, int $limit, int $offset)
+    public function __construct(array $popularities, int $total, int $limit, int $offset)
     {
-        $this->packagePopularities = $packagePopularities;
+        $this->popularities = $popularities;
         $this->total = $total;
         $this->limit = $limit;
         $this->offset = $offset;
@@ -51,15 +51,15 @@ class PackagePopularityList
      */
     public function getCount(): int
     {
-        return count($this->getPackagePopularities());
+        return count($this->getPopularities());
     }
 
     /**
-     * @return PackagePopularity[]
+     * @return Popularity[]
      */
-    public function getPackagePopularities(): array
+    public function getPopularities(): array
     {
-        return $this->packagePopularities;
+        return $this->popularities;
     }
 
     /**

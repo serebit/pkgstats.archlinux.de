@@ -2,12 +2,12 @@
 
 namespace App\Serializer;
 
-use App\Response\PackagePopularityList;
+use App\Response\PopularityList;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PackagePopularityListNormalizer implements
+class PopularityListNormalizer implements
     NormalizerInterface,
     NormalizerAwareInterface,
     CacheableSupportsMethodInterface
@@ -16,19 +16,22 @@ class PackagePopularityListNormalizer implements
     private $normalizer;
 
     /**
-     * @param PackagePopularityList $object
+     * @param PopularityList $object
      * @param string|null $format
      * @param array $context
      * @return array
      */
     public function normalize($object, string $format = null, array $context = []): array
     {
+        $popularities = $this->normalizer->normalize($object->getPopularities(), $format, $context);
         return [
             'total' => $object->getTotal(),
             'count' => $object->getCount(),
             'limit' => $object->getLimit(),
             'offset' => $object->getOffset(),
-            'packagePopularities' => $this->normalizer->normalize($object->getPackagePopularities(), $format, $context)
+            'popularities' => $popularities,
+            // @TODO: Find better way to deal with API break instead of duplication
+            'packagePopularities' => $popularities
         ];
     }
 
@@ -39,7 +42,7 @@ class PackagePopularityListNormalizer implements
      */
     public function supportsNormalization($data, string $format = null): bool
     {
-        return $data instanceof PackagePopularityList && $format == 'json';
+        return $data instanceof PopularityList && $format == 'json';
     }
 
     /**

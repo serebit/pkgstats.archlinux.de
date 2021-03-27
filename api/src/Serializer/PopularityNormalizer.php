@@ -2,14 +2,14 @@
 
 namespace App\Serializer;
 
-use App\Response\PackagePopularity;
+use App\Response\Popularity;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PackagePopularityNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class PopularityNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
-     * @param PackagePopularity $object
+     * @param Popularity $object
      * @param string|null $format
      * @param array $context
      * @return array
@@ -33,7 +33,7 @@ class PackagePopularityNormalizer implements NormalizerInterface, CacheableSuppo
      */
     public function supportsNormalization($data, string $format = null): bool
     {
-        return $data instanceof PackagePopularity && $format == 'json';
+        return $data instanceof Popularity && $format == 'json';
     }
 
     /**
