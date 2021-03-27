@@ -14,7 +14,7 @@ interface CountableRepositoryInterface
         int $limit
     ): array;
 
-    public function getMaximumCountByRange(int $startMonth, int $endMonth): int;
+    public function getCountByRange(int $startMonth, int $endMonth): int;
 
     public function findByRange(
         string $query,
@@ -24,5 +24,5 @@ interface CountableRepositoryInterface
         int $limit
     ): array;
 
-    public function getMonthlyMaximumCountByRange(int $startMonth, int $endMonth): array;
+    public function getMonthlyCountByRange(int $startMonth, int $endMonth): array;
 }

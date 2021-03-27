@@ -35,7 +35,7 @@ class PopularityCalculatorTest extends TestCase
         $this
             ->packageRepository
             ->expects($this->once())
-            ->method('getMaximumCountByRange')
+            ->method('getCountByRange')
             ->with(201801, 201812)
             ->willReturn(43);
 
@@ -68,7 +68,7 @@ class PopularityCalculatorTest extends TestCase
         $this
             ->packageRepository
             ->expects($this->once())
-            ->method('getMaximumCountByRange')
+            ->method('getCountByRange')
             ->with(201801, 201812)
             ->willReturn(44);
 
@@ -86,7 +86,7 @@ class PopularityCalculatorTest extends TestCase
         $this
             ->packageRepository
             ->expects($this->once())
-            ->method('getMonthlyMaximumCountByRange')
+            ->method('getMonthlyCountByRange')
             ->with(201801, 201812)
             ->willReturn([
                 [

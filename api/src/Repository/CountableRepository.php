@@ -82,28 +82,15 @@ abstract class CountableRepository extends ServiceEntityRepository implements Co
      * @param int $endMonth
      * @return int
      */
-    public function getMaximumCountByRange(int $startMonth, int $endMonth): int
+    public function getCountByRange(int $startMonth, int $endMonth): int
     {
         $queryBuilder = $this->createQueryBuilder('countable');
-
-        if ($startMonth == $endMonth) {
-            $queryBuilder
-                ->select('countable.count')
-                ->where('countable.month = :month')
-                ->orderBy('countable.count', 'DESC')
-                ->setMaxResults(1)
-                ->setParameter('month', $startMonth);
-        } else {
-            $queryBuilder
-                ->select('SUM(countable.count) AS count')
-                ->where('countable.month >= :startMonth')
-                ->andWhere('countable.month <= :endMonth')
-                ->groupBy('countable.name')
-                ->orderBy('count', 'DESC')
-                ->setMaxResults(1)
-                ->setParameter('startMonth', $startMonth)
-                ->setParameter('endMonth', $endMonth);
-        }
+        $queryBuilder
+            ->select('SUM(countable.count) AS count')
+            ->where('countable.month >= :startMonth')
+            ->andWhere('countable.month <= :endMonth')
+            ->setParameter('startMonth', $startMonth)
+            ->setParameter('endMonth', $endMonth);
 
         try {
             return $queryBuilder
@@ -180,10 +167,10 @@ abstract class CountableRepository extends ServiceEntityRepository implements Co
      * @param int $endMonth
      * @return array
      */
-    public function getMonthlyMaximumCountByRange(int $startMonth, int $endMonth): array
+    public function getMonthlyCountByRange(int $startMonth, int $endMonth): array
     {
         return $this->createQueryBuilder('countable')
-            ->select('MAX(countable.count) AS count')
+            ->select('SUM(countable.count) AS count')
             ->addSelect('countable.month')
             ->where('countable.month >= :startMonth')
             ->andWhere('countable.month <= :endMonth')

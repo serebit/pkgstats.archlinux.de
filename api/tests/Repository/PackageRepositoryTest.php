@@ -104,7 +104,7 @@ class PackageRepositoryTest extends DatabaseTestCase
 
         /** @var PackageRepository $packageRepository */
         $packageRepository = $this->getRepository(Package::class);
-        $count = $packageRepository->getMaximumCountByRange($startMonth, $endMonth);
+        $count = $packageRepository->getCountByRange($startMonth, $endMonth);
 
         $this->assertEquals(2, $count);
     }
@@ -118,7 +118,7 @@ class PackageRepositoryTest extends DatabaseTestCase
     {
         /** @var PackageRepository $packageRepository */
         $packageRepository = $this->getRepository(Package::class);
-        $count = $packageRepository->getMaximumCountByRange($startMonth, $endMonth);
+        $count = $packageRepository->getCountByRange($startMonth, $endMonth);
 
         $this->assertEquals(0, $count);
     }
@@ -163,7 +163,7 @@ class PackageRepositoryTest extends DatabaseTestCase
 
         /** @var PackageRepository $packageRepository */
         $packageRepository = $this->getRepository(Package::class);
-        $monthlyCount = $packageRepository->getMonthlyMaximumCountByRange(201810, 201811);
+        $monthlyCount = $packageRepository->getMonthlyCountByRange(201810, 201811);
         $this->assertEquals([['count' => 2, 'month' => 201810]], $monthlyCount);
     }
 

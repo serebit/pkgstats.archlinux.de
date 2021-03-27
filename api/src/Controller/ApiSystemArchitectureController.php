@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Cache(smaxage="first day of next month", maxage="+5 minutes")
  */
-class ApiPackagesController extends AbstractController
+class ApiSystemArchitectureController extends AbstractController
 {
     /** @var PopularityCalculator */
     private $popularityCalculator;
@@ -33,25 +33,25 @@ class ApiPackagesController extends AbstractController
 
     /**
      * @Route(
-     *     "/api/packages/{name}",
+     *     "/api/system/architecture/{name}",
      *      methods={"GET"},
-     *      requirements={"name"="^[^-/]{1}[^/\s]{0,190}$"},
-     *      name="app_api_package"
+     *      requirements={"name"="^[\w-]{1,10}$"},
+     *      name="app_api_system_architecture"
      * )
      * @param string $name
      * @param StatisticsRangeRequest $statisticsRangeRequest
      * @return Response
      *
-     * @OA\Tag(name="packages")
+     * @OA\Tag(name="system architecture")
      * @OA\Response(
-     *     description="Returns popularity of given package",
+     *     description="Returns popularity of given system arhitecture",
      *     response=200,
      *     @Model(type=Popularity::class)
      * )
      * @OA\Parameter(
      *     in="path",
      *     name="name",
-     *     description="Name of the package",
+     *     description="Name of the system architecture",
      *     @OA\Schema(
      *         type="string"
      *     )
@@ -75,7 +75,7 @@ class ApiPackagesController extends AbstractController
      *     )
      * )
      */
-    public function packageAction(string $name, StatisticsRangeRequest $statisticsRangeRequest): Response
+    public function systemArchitectureAction(string $name, StatisticsRangeRequest $statisticsRangeRequest): Response
     {
         return $this->json(
             $this->popularityCalculator->getPopularity($name, $statisticsRangeRequest)
@@ -84,26 +84,26 @@ class ApiPackagesController extends AbstractController
 
     /**
      * @Route(
-     *     "/api/packages/{name}/series",
+     *     "/api/system/architecture/{name}/series",
      *      methods={"GET"},
-     *      requirements={"name"="^[^-/]{1}[^/\s]{0,190}$"},
-     *      name="app_api_package_series"
+     *      requirements={"name"="^[\w-]{1,10}$"},
+     *      name="app_api_system_architecture_series"
      * )
      * @param string $name
      * @param StatisticsRangeRequest $statisticsRangeRequest
      * @param PaginationRequest $paginationRequest
      * @return Response
      *
-     * @OA\Tag(name="packages")
+     * @OA\Tag(name="system architecture")
      * @OA\Response(
-     *     description="Returns popularities of given package in a monthly series",
+     *     description="Returns popularities of given system architecture in a monthly series",
      *     response=200,
      *     @Model(type=PopularityList::class)
      * )
      * @OA\Parameter(
      *     in="path",
      *     name="name",
-     *     description="Name of the package",
+     *     description="Name of the system architecture",
      *     @OA\Schema(
      *         type="string"
      *     )
@@ -151,7 +151,7 @@ class ApiPackagesController extends AbstractController
      *     )
      * )
      */
-    public function packageSeriesAction(
+    public function systemArchitectureSeriesAction(
         string $name,
         StatisticsRangeRequest $statisticsRangeRequest,
         PaginationRequest $paginationRequest
@@ -167,18 +167,18 @@ class ApiPackagesController extends AbstractController
 
     /**
      * @Route(
-     *     "/api/packages",
+     *     "/api/system/architecture",
      *      methods={"GET"},
-     *      name="app_api_packages"
+     *      name="app_api_system_architectures"
      * )
      * @param StatisticsRangeRequest $statisticsRangeRequest
      * @param PaginationRequest $paginationRequest
      * @param QueryRequest $queryRequest
      * @return Response
      *
-     * @OA\Tag(name="packages")
+     * @OA\Tag(name="system architecture")
      * @OA\Response(
-     *     description="Returns list of package popularities",
+     *     description="Returns list of system architecture popularities",
      *     response=200,
      *     @Model(type=PopularityList::class)
      * )
@@ -229,14 +229,14 @@ class ApiPackagesController extends AbstractController
      *     name="query",
      *     required=false,
      *     in="query",
-     *     description="Search by package name",
+     *     description="Search by system architecture name",
      *     @OA\Schema(
      *         type="string",
-     *         maxLength=191
+     *         maxLength=10
      *     )
      * )
      */
-    public function packageJsonAction(
+    public function systemArchitectureJsonAction(
         StatisticsRangeRequest $statisticsRangeRequest,
         PaginationRequest $paginationRequest,
         QueryRequest $queryRequest

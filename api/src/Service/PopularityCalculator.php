@@ -53,7 +53,7 @@ class PopularityCalculator
      */
     private function getRangeCount(StatisticsRangeRequest $statisticsRangeRequest): int
     {
-        return $this->countableRepository->getMaximumCountByRange(
+        return $this->countableRepository->getCountByRange(
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth()
         );
@@ -158,7 +158,7 @@ class PopularityCalculator
      */
     private function getRangeCountSeries(StatisticsRangeRequest $statisticsRangeRequest): array
     {
-        $monthlyCount = $this->countableRepository->getMonthlyMaximumCountByRange(
+        $monthlyCount = $this->countableRepository->getMonthlyCountByRange(
             $statisticsRangeRequest->getStartMonth(),
             $statisticsRangeRequest->getEndMonth()
         );

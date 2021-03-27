@@ -64,8 +64,8 @@ class PackageRepositoryCacheWarmer implements CacheWarmerInterface
                 )
             );
 
-            $this->packageRepository->getMonthlyMaximumCountByRange($defaultMonth, $defaultMonth);
-            $this->packageRepository->getMaximumCountByRange($defaultMonth, $defaultMonth);
+            $this->packageRepository->getMonthlyCountByRange($defaultMonth, $defaultMonth);
+            $this->packageRepository->getCountByRange($defaultMonth, $defaultMonth);
 
             $this->logger->info('Package repository cache warmed up');
         } catch (\Throwable $e) {

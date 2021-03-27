@@ -57,3 +57,39 @@ services:
     App\Controller\ApiPackagesController:
         bind:
             $popularityCalculator: '@app.popularity_calculator.package'
+
+    app.popularity_calculator.system_architecture:
+        class: App\Service\PopularityCalculator
+        bind:
+            $countableRepository: '@App\Repository\SystemArchitectureRepository'
+
+    App\Controller\ApiSystemArchitectureController:
+        bind:
+            $popularityCalculator: '@app.popularity_calculator.system_architecture'
+
+    app.popularity_calculator.operating_system_architecture:
+        class: App\Service\PopularityCalculator
+        bind:
+            $countableRepository: '@App\Repository\OperatingSystemArchitectureRepository'
+
+    App\Controller\ApiOperatingSystemArchitectureController:
+        bind:
+            $popularityCalculator: '@app.popularity_calculator.operating_system_architecture'
+
+    app.popularity_calculator.countries:
+        class: App\Service\PopularityCalculator
+        bind:
+            $countableRepository: '@App\Repository\CountryRepository'
+
+    App\Controller\ApiCountriesController:
+        bind:
+            $popularityCalculator: '@app.popularity_calculator.countries'
+
+    app.popularity_calculator.mirrors:
+        class: App\Service\PopularityCalculator
+        bind:
+            $countableRepository: '@App\Repository\MirrorRepository'
+
+    App\Controller\ApiMirrorsController:
+        bind:
+            $popularityCalculator: '@app.popularity_calculator.mirrors'
